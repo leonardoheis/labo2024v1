@@ -7,13 +7,18 @@ require("rpart")
 require("rpart.plot")
 
 # Aqui se debe poner la carpeta de la materia de SU computadora local
-setwd("X:\\gdrive\\labo2024v1\\") # Establezco el Working Directory
+#setwd("C:\\Users\\leona\\Desktop\\MCD\\Laboratorio_de_Implementacion_I\\") # Establezco el Working Directory
+setwd("~\\..\\")
+
 
 # cargo el dataset
-dataset <- fread("./datasets/dataset_pequeno.csv")
+#dataset <- fread("./datasets/dataset_pequeno.csv")
+dataset <- fread("./Desktop/MCD/Laboratorio_de_Implementacion_I/datasets/dataset_pequeno.csv")
 
 dtrain <- dataset[foto_mes == 202107] # defino donde voy a entrenar
 dapply <- dataset[foto_mes == 202109] # defino donde voy a aplicar el modelo
+
+#table(is.na(dtrain))
 
 # genero el modelo,  aqui se construye el arbol
 # quiero predecir clase_ternaria a partir de el resto de las variables
@@ -21,10 +26,10 @@ modelo <- rpart(
         formula = "clase_ternaria ~ .",
         data = dtrain, # los datos donde voy a entrenar
         xval = 0,
-        cp = -0.3, # esto significa no limitar la complejidad de los splits
-        minsplit = 0, # minima cantidad de registros para que se haga el split
-        minbucket = 1, # tamaño minimo de una hoja
-        maxdepth = 3
+        cp = -0.5, #-0.3, # esto significa no limitar la complejidad de los splits
+        minsplit = 500,#0, # minima cantidad de registros para que se haga el split -- min_split >= 2 * min_bucket
+        minbucket = 250,#1, # tamaño minimo de una hoja
+        maxdepth = 6 #3
 ) # profundidad maxima del arbol
 
 
