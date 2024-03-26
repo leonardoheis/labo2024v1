@@ -6,6 +6,7 @@ require("rpart")
 
 PARAM <- list()
 PARAM$semilla <- 141223
+#
 
 #------------------------------------------------------------------------------
 # particionar agrega una columna llamada fold a un dataset
