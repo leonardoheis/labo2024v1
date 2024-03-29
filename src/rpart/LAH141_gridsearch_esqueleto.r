@@ -144,6 +144,6 @@ results <- lapply(1:nrow(hyperparams), function(i) {
 
 # Combine the results into a single data.table
 tb_grid_search <- rbindlist(results)
-
+Sys.sleep(2)  # espero un par de segundos
 # Write the final data.table to disk
 fwrite(tb_grid_search, file = archivo_salida, sep = "\t")
