@@ -126,7 +126,8 @@ hyperparams <- expand.grid(
     vcp = c(-1, -0.9, -0.8, -0.6, -0.5, -0.2, 0),
     vmax_depth = c(2, 5, 6, 10, 14, 20, 25, 30),
     vmin_split = c(200, 400, 450, 500, 550, 600, 800),
-    vmin_bucket = c(1000, 800, 600, 400, 200, 100, 50)
+    #vmin_bucket = c(1000, 800, 600, 400, 200, 100, 50)
+    vmin_bucket = c(vmin_split/2 ,  vmin_split/3,  vmin_split/4, vmin_split/5,  10, 5, 2, 1 )
 )
 
 # Calculate average gain for each combination of hyperparameters
