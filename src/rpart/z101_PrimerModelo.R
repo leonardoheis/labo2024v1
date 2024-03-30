@@ -27,8 +27,8 @@ modelo <- rpart(
         data = dtrain, # los datos donde voy a entrenar
         xval = 0,
         cp = -1, #-0.3, # esto significa no limitar la complejidad de los splits
-        minsplit = 800,#0, # minima cantidad de registros para que se haga el split -- min_split >= 2 * min_bucket
-        minbucket = 267,#1, # tamaño minimo de una hoja
+        minsplit = 400,#0, # minima cantidad de registros para que se haga el split -- min_split >= 2 * min_bucket
+        minbucket = 133,#1, # tamaño minimo de una hoja
         maxdepth = 5 #3
 ) # profundidad maxima del arbol
 
@@ -68,3 +68,4 @@ fwrite(dapply[, list(numero_de_cliente, Predicted)],
         file = "./exp/KA2001/K101_001.csv",
         sep = ","
 )
+
