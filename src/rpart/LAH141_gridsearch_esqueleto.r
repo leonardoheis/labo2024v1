@@ -78,7 +78,7 @@ ArbolesMontecarlo <- function(semillas, param_basicos) {
         semillas, # paso el vector de semillas
         MoreArgs = list(param_basicos), # aqui paso el segundo parametro
         SIMPLIFY = FALSE,
-        mc.cores = 1 #5 # en Windows este valor debe ser 1
+        mc.cores = 5 # en Windows este valor debe ser 1
     )
 
     ganancia_promedio <- mean(unlist(ganancias))
@@ -89,25 +89,26 @@ ArbolesMontecarlo <- function(semillas, param_basicos) {
 #------------------------------------------------------------------------------
 
 # Aqui se debe poner la carpeta de la computadora local
-#setwd("~/buckets/b1/") # Establezco el Working Directory
-setwd("~\\..\\")
+setwd("~/buckets/b1/") # Establezco el Working Directory
+#setwd("~\\..\\")
 # cargo los datos
 
 # cargo los datos
-#dataset <- fread("./datasets/dataset_pequeno.csv")
-dataset <- fread("./Desktop/MCD/Laboratorio_de_Implementacion_I/datasets/dataset_pequeno.csv")
+dataset <- fread("./datasets/dataset_pequeno.csv")
+#dataset <- fread("./Desktop/MCD/Laboratorio_de_Implementacion_I/datasets/dataset_pequeno.csv")
 
 # trabajo solo con los datos con clase, es decir 202107
 dataset <- dataset[clase_ternaria != ""]
 
-# genero el archivo para Kaggle
+  # genero el archivo para Kaggle
 # creo la carpeta donde va el experimento
 # HT  representa  Hiperparameter Tuning
-#dir.create("./exp/", showWarnings = FALSE)
-#dir.create("./exp/HT2020/", showWarnings = FALSE)
-dir.create("./Desktop/MCD/Laboratorio_de_Implementacion_I/exp/", showWarnings = TRUE)
-dir.create("./Desktop/MCD/Laboratorio_de_Implementacion_I/exp/HT2020/", showWarnings = TRUE)
-archivo_salida <- "./Desktop/MCD/Laboratorio_de_Implementacion_I/exp/HT2020/gridsearch.txt"
+dir.create("./exp/", showWarnings = FALSE)
+dir.create("./exp/HT2020/", showWarnings = FALSE)
+archivo_salida <- "./exp/HT2020/gridsearch.txt"
+#dir.create("./Desktop/MCD/Laboratorio_de_Implementacion_I/exp/", showWarnings = TRUE)
+#dir.create("./Desktop/MCD/Laboratorio_de_Implementacion_I/exp/HT2020/", showWarnings = TRUE)
+#archivo_salida <- "./Desktop/MCD/Laboratorio_de_Implementacion_I/exp/HT2020/gridsearch.txt"
 
 # genero la data.table donde van los resultados del Grid Search
 tb_grid_search <- data.table( max_depth = integer(),
@@ -122,12 +123,12 @@ tb_grid_search <- data.table( max_depth = integer(),
 #    vmin_bucket = c(800, 600, 400)
 #)
 
+vmin_split <- c(200, 400, 450, 500, 550, 600, 800)
 hyperparams <- expand.grid(
-    vcp = c(-1, -0.9, -0.8, -0.6, -0.5, -0.2, 0),
-    vmax_depth = c(2, 5, 6, 10, 14, 20, 25, 30),
-    vmin_split = c(200, 400, 450, 500, 550, 600, 800),
-    #vmin_bucket = c(1000, 800, 600, 400, 200, 100, 50)
-    vmin_bucket = c(vmin_split/2 ,  vmin_split/3,  vmin_split/4, vmin_split/5,  10, 5, 2, 1 )
+  vcp = c(-1, -0.9, -0.8, -0.6, -0.5, -0.2, 0),
+  vmax_depth = c(2, 5, 6, 10, 14, 20, 25, 30),
+  vmin_split = vmin_split,
+  vmin_bucket = c(vmin_split/2 ,  vmin_split/3,  vmin_split/4, vmin_split/5,  10, 5, 2, 1 )
 )
 
 # Calculate average gain for each combination of hyperparameters
