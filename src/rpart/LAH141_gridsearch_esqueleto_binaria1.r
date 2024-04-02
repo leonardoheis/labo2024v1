@@ -59,7 +59,7 @@ ArbolEstimarGanancia <- function(semilla, param_basicos) {
   ganancia_test <- dataset[
     fold == 2,
     sum(ifelse(prediccion[, "pos"] > 0.025,
-      ifelse(lase_binaria1 == "pos", 117000, -3000),
+      ifelse(clase_binaria == "pos", 117000, -3000),
       0
     ))
   ]
@@ -108,39 +108,54 @@ dir.create("./exp/HT2020/", showWarnings = FALSE)
 archivo_salida <- "./exp/HT2020/gridsearch.txt"
 
 # genero la data.table donde van los resultados del Grid Search
-tb_grid_search <- data.table( max_depth = integer(),
-                              min_split = integer(),
-                              ganancia_promedio = numeric() )
+tb_grid_search <- data.table(
+  max_depth = integer(),
+  min_split = integer(),
+  cp = integer(),
+  min_bucket = integer(),
+  ganancia_promedio = numeric()
+)
 
 
 # itero por los loops anidados para cada hiperparametro
 
-for (vmax_depth in c(4, 6, 8, 10, 12, 14)) {
+for (vmax_depth in c(5, 6)) {
   for (vmin_split in c(1000, 800, 600, 400, 200, 100, 50, 20, 10)) {
-    # notar como se agrega
+    for (vcp in c(-1, -0.5)) {
+      for (vmin_bucket in c(vmin_split / 2,
+                            vmin_split / 3,
+                            vmin_split / 4,
+                            vmin_split / 5, 20, 10, 5, 2, 1)) {
+        # notar como se agrega
 
-    # vminsplit  minima cantidad de registros en un nodo para hacer el split
-    param_basicos <- list(
-      "cp" = -0.5, # complejidad minima
-      "minsplit" = vmin_split,
-      "minbucket" = 5, # minima cantidad de registros en una hoja
-      "maxdepth" = vmax_depth
-    ) # profundidad máxima del arbol
+        # vminsplit  minima cantidad de registros en un nodo para hacer el split
+        param_basicos <- list(
+          "cp" = vcp, # complejidad minima
+          "minsplit" = vmin_split,
+          "minbucket" = vmin_bucket, # minima cantidad de registros en una hoja
+          "maxdepth" = vmax_depth
+        ) # profundidad máxima del arbol
 
-    # Un solo llamado, con la semilla 17
-    ganancia_promedio <- ArbolesMontecarlo(PARAM$semillas, param_basicos)
+        # Un solo llamado, con la semilla 17
+        ganancia_promedio <- ArbolesMontecarlo(PARAM$semillas, param_basicos)
 
-    # agrego a la tabla
-    tb_grid_search <- rbindlist( 
-      list( tb_grid_search, 
-            list( vmax_depth, vmin_split, ganancia_promedio) ) )
+        # agrego a la tabla
+        tb_grid_search <- rbindlist(
+          list(
+            tb_grid_search,
+            list(vmax_depth, vmin_split, ganancia_promedio)
+          )
+        )
 
+      }
+    }
   }
-
-  # escribo la tabla a disco en cada vuelta del loop mas externo
-  Sys.sleep(2)  # espero un par de segundos
-
-  fwrite( tb_grid_search,
-          file = archivo_salida,
-          sep = "\t" )
 }
+
+# escribo la tabla a disco en cada vuelta del loop mas externo
+Sys.sleep(2)  # espero un par de segundos
+
+fwrite(tb_grid_search,
+  file = archivo_salida,
+  sep = "\t"
+)
