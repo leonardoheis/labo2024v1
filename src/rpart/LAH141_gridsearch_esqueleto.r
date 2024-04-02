@@ -105,7 +105,8 @@ dataset <- dataset[clase_ternaria != ""]
 # HT  representa  Hiperparameter Tuning
 dir.create("./exp/", showWarnings = FALSE)
 dir.create("./exp/HT2020/", showWarnings = FALSE)
-archivo_salida <- "./exp/HT2020/gridsearch.txt"
+imestamp <- format(Sys.time(), "%Y%m%d%H%M%S") 
+archivo_salida <- paste0("./exp/HT2020/gridsearch", timestamp,".txt")
 # dir.create("./Desktop/MCD/Laboratorio_de_Implementacion_I/exp/", showWarnings = TRUE)
 # dir.create("./Desktop/MCD/Laboratorio_de_Implementacion_I/exp/HT2020/", showWarnings = TRUE)
 # archivo_salida <- "./Desktop/MCD/Laboratorio_de_Implementacion_I/exp/HT2020/gridsearch.txt"
