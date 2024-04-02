@@ -108,7 +108,7 @@ dataset[,clase_ternaria := NULL]
 # HT  representa  Hiperparameter Tuning
 dir.create("./exp/", showWarnings = FALSE)
 dir.create("./exp/HT2020/", showWarnings = FALSE)
-archivo_salida <- "./exp/HT2020/gridsearch.txt"
+archivo_salida <- paste0("./exp/HT2020/gridsearchBinary", timestamp, ".txt")
 
 # genero la data.table donde van los resultados del Grid Search
 tb_grid_search <- data.table(
