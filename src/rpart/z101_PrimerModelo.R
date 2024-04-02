@@ -22,14 +22,19 @@ dapply <- dataset[foto_mes == 202109] # defino donde voy a aplicar el modelo
 
 # genero el modelo,  aqui se construye el arbol
 # quiero predecir clase_ternaria a partir de el resto de las variables
+vcp = -1
+vminsplit = 100
+vminbucket = 2
+vmaxdepth = 6
+
 modelo <- rpart(
         formula = "clase_ternaria ~ .",
         data = dtrain, # los datos donde voy a entrenar
         xval = 0,
-        cp = -1, #-0.3, # esto significa no limitar la complejidad de los splits
-        minsplit = 700,#0, # minima cantidad de registros para que se haga el split -- min_split >= 2 * min_bucket
-        minbucket = 175,#1, # tamaño minimo de una hoja
-        maxdepth = 6 #3
+        cp = vcp, #-0.3, # esto significa no limitar la complejidad de los splits
+        minsplit = vminsplit,#0, # minima cantidad de registros para que se haga el split -- min_split >= 2 * min_bucket
+        minbucket = vminbucket,#1, # tamaño minimo de una hoja
+        maxdepth = vmaxdepth #3
 ) # profundidad maxima del arbol
 
 
@@ -73,8 +78,10 @@ timestamp <- format(Sys.time(), "%Y%m%d%H%M%S")  # Get current timestamp
 #sequential_value <- 1  # Set initial sequential value
 # Check if a file name exists in ./exp/KA2001
 if (file.exists("./exp/KA2001")) {        # Get the list of files in the directory
-        #print("hay")
-        files <- list.files(path = "./exp/KA2001", pattern = "K101_\\d{14}_\\d{3}\\.csv", full.names = TRUE)
+        print("hay")
+        files <- list.files(path = "./exp/KA2001", 
+                            pattern = "K101_\\d{14}_*_\\d{3}\\.csv", 
+                            full.names = TRUE)
         
         # Sort the files by creation time
         files <- sort(files, decreasing = TRUE)
@@ -92,16 +99,23 @@ if (file.exists("./exp/KA2001")) {        # Get the list of files in the directo
         sequential_value <- last_digits + 1
 } else {
         # If the directory doesn't exist, set the sequential value to 1
-        #print("no hay")
+        print("no hay")
         sequential_value <- 1
 }
 
 # Generate the unique filename
-sequential_value
-filename <- paste0("./exp/KA2001/K101_", timestamp, "_", sprintf("%03d", sequential_value), ".csv")
+sequential_value <- 6
+
+filename <- paste0("./exp/KA2001/K101_", 
+                   timestamp, "_", 
+                   vcp, "_", 
+                   vminsplit, "_", 
+                   vminbucket, "_", 
+                   vmaxdepth, "_", 
+                   sprintf("%03d", sequential_value), ".csv")
 
 # Increment the sequential value for the next run
-sequential_value <- sequential_value + 1
+#sequential_value <- sequential_value + 1
 
 # Write the data to the file
 fwrite(dapply[, list(numero_de_cliente, Predicted)],
