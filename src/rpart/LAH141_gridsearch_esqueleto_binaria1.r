@@ -101,7 +101,7 @@ dataset <- dataset[clase_ternaria != ""]
 # agrego clase binaria y elimino la clase ternaria
 dataset[clase_ternaria == "BAJA+2", clase_binaria := "pos"]
 dataset[clase_ternaria != "BAJA+2", clase_binaria := "neg"]
-dataset[clase_ternaria := NULL]
+dataset[,clase_ternaria := NULL]
 
 # genero el archivo para Kaggle
 # creo la carpeta donde va el experimento
