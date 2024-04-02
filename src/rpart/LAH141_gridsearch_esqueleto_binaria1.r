@@ -96,9 +96,12 @@ setwd("~/buckets/b1/") # Establezco el Working Directory
 dataset <- fread("./datasets/dataset_pequeno.csv")
 
 # trabajo solo con los datos con clase, es decir 202107
+dataset <- dataset[clase_ternaria != ""]
+
+# agrego clase binaria y elimino la clase ternaria
 dataset[clase_ternaria == "BAJA+2", clase_binaria := "pos"]
 dataset[clase_ternaria != "BAJA+2", clase_binaria := "neg"]
-dataset <- dataset[clase_ternaria != ""]
+dataset[clase_ternaria := NULL]
 
 # genero el archivo para Kaggle
 # creo la carpeta donde va el experimento
@@ -119,7 +122,7 @@ tb_grid_search <- data.table(
 
 # itero por los loops anidados para cada hiperparametro
 
-for (vmax_depth in c(5, 6)) {
+for (vmax_depth in c(2, 4, 5, 6, 8, 10)) {
   for (vmin_split in c(1000, 800, 600, 400, 200, 100, 50, 20, 10)) {
     for (vcp in c(-1, -0.5)) {
       for (vmin_bucket in c(vmin_split / 2,
