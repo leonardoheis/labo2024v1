@@ -143,7 +143,7 @@ for (vmax_depth in c(5, 6)) {
         tb_grid_search <- rbindlist(
           list(
             tb_grid_search,
-            list(vmax_depth, vmin_split, ganancia_promedio)
+            list(vmax_depth, vmin_split, vcp, vmin_bucket, ganancia_promedio)
           )
         )
 
