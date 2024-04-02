@@ -34,11 +34,11 @@ particionar <- function(data, division, agrupa = "", campo = "fold", start = 1, 
 
 ArbolEstimarGanancia <- function(semilla, param_basicos) {
   # particiono estratificadamente el dataset
-  particionar(dataset, division = c(7, 3), agrupa = "clase_ternaria", seed = semilla)
+  particionar(dataset, division = c(7, 3), agrupa = "clase_binaria", seed = semilla)
 
   # genero el modelo
   # quiero predecir clase_ternaria a partir del resto
-  modelo <- rpart("clase_ternaria ~ .",
+  modelo <- rpart("clase_binaria ~ .",
     data = dataset[fold == 1], # fold==1  es training,  el 70% de los datos
     xval = 0,
     control = param_basicos
@@ -58,8 +58,8 @@ ArbolEstimarGanancia <- function(semilla, param_basicos) {
   # calculo la ganancia en testing  qu es fold==2
   ganancia_test <- dataset[
     fold == 2,
-    sum(ifelse(prediccion[, "BAJA+2"] > 0.025,
-      ifelse(clase_ternaria == "BAJA+2", 117000, -3000),
+    sum(ifelse(prediccion[, "pos"] > 0.025,
+      ifelse(lase_binaria1 == "pos", 117000, -3000),
       0
     ))
   ]
@@ -96,6 +96,8 @@ setwd("~/buckets/b1/") # Establezco el Working Directory
 dataset <- fread("./datasets/dataset_pequeno.csv")
 
 # trabajo solo con los datos con clase, es decir 202107
+dataset[clase_ternaria == "BAJA+2", clase_binaria := "pos"]
+dataset[clase_ternaria != "BAJA+2", clase_binaria := "neg"]
 dataset <- dataset[clase_ternaria != ""]
 
 # genero el archivo para Kaggle
