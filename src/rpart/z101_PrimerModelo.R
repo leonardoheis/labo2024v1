@@ -1,5 +1,7 @@
 # Arbol elemental con libreria  rpart
 # Debe tener instaladas las librerias  data.table  ,  rpart  y  rpart.plot
+rm(list = ls()) # Borro todos los objetos
+gc() # Garbage Collection
 
 # cargo las librerias que necesito
 require("data.table")
@@ -22,15 +24,15 @@ dapply <- dataset[foto_mes == 202109] # defino donde voy a aplicar el modelo
 
 # genero el modelo,  aqui se construye el arbol
 # quiero predecir clase_ternaria a partir de el resto de las variables
-vcp = -1
-vminsplit = 100
-vminbucket = 2
-vmaxdepth = 6
+vcp = -0.574756397810415
+vminsplit = 4134
+vminbucket = 2061
+vmaxdepth = 17
 
 modelo <- rpart(
         formula = "clase_ternaria ~ .",
         data = dtrain, # los datos donde voy a entrenar
-        xval = 0,
+        xval = 0,#5,
         cp = vcp, #-0.3, # esto significa no limitar la complejidad de los splits
         minsplit = vminsplit,#0, # minima cantidad de registros para que se haga el split -- min_split >= 2 * min_bucket
         minbucket = vminbucket,#1, # tamaño minimo de una hoja
