@@ -80,7 +80,7 @@ timestamp <- format(Sys.time(), "%Y%m%d%H%M%S")  # Get current timestamp
 if (file.exists("./exp/KA2001")) {        # Get the list of files in the directory
         print("hay")
         files <- list.files(path = "./exp/KA2001", 
-                            pattern = "K101_\\d{14}_*_\\d{3}\\.csv", 
+                            pattern = "K101_\\d{14}_\\d{3}\\.csv", 
                             full.names = TRUE)
         
         # Sort the files by creation time
@@ -104,14 +104,10 @@ if (file.exists("./exp/KA2001")) {        # Get the list of files in the directo
 }
 
 # Generate the unique filename
-sequential_value <- 6
+sequential_value
 
 filename <- paste0("./exp/KA2001/K101_", 
                    timestamp, "_", 
-                   vcp, "_", 
-                   vminsplit, "_", 
-                   vminbucket, "_", 
-                   vmaxdepth, "_", 
                    sprintf("%03d", sequential_value), ".csv")
 
 # Increment the sequential value for the next run
