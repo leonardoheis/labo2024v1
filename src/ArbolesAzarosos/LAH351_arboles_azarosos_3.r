@@ -16,9 +16,9 @@ PARAM$experimento <- 3510
 # parameetros rpart
 PARAM$rpart_param <- list(
   "cp" = -1,
-  "minsplit" = 750,
+  "minsplit" = 1500,
   "minbucket" = 100,
-  "maxdepth" = 14
+  "maxdepth" = 10
 )
 
 # parametros  arbol
@@ -117,7 +117,7 @@ for (arbolito in 1:PARAM$num_trees_max) {
     nom_arch <- paste0(
       "KA", PARAM$experimento, "_",
       sprintf("%.3d", arbolito), # para que tenga ceros adelante
-      "_4.csv"
+      "_6.csv"
     )
     fwrite(entrega,
       file = nom_arch,
