@@ -24,10 +24,10 @@ dapply <- dataset[foto_mes == 202109] # defino donde voy a aplicar el modelo
 
 # genero el modelo,  aqui se construye el arbol
 # quiero predecir clase_ternaria a partir de el resto de las variables
-vcp = -0.705961974879565
-vminsplit = 7994
-vminbucket = 3997
-vmaxdepth = 4
+vcp = -0.9901344498
+vminsplit = 2002
+vminbucket = 998
+vmaxdepth = 17
 
 modelo <- rpart(
         formula = "clase_ternaria ~ .",

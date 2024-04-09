@@ -17,9 +17,9 @@ require("ggplot2")
 
 # cambiar aqui los parametros
 PARAM <- list()
-PARAM$minsplit <- 300
-PARAM$minbucket <- 20
-PARAM$maxdepth <- 11
+PARAM$minsplit <- 8000
+PARAM$minbucket <- 8000#PARAM$minsplit / 3
+PARAM$maxdepth <- 20
 
 #------------------------------------------------------------------------------
 # particionar agrega una columna llamada fold a un dataset
@@ -49,14 +49,18 @@ particionar <- function(data, division, agrupa = "", campo = "fold",
 #------------------------------------------------------------------------------
 # Aqui empieza el programa
 
-setwd("~/buckets/b1/") # Establezco el Working Directory
+#setwd("~/buckets/b1/") # Establezco el Working Directory
+setwd("~\\..\\")
 
 #cargo MI amada primera semilla, que esta en MI bucket
-tabla_semillas <- fread( "./datasets//mis_semillas.txt" )
+#tabla_semillas <- fread( "./datasets//mis_semillas.txt" )
+tabla_semillas <- fread( "./Desktop/MCD/Laboratorio_de_Implementacion_I/datasets//mis_semillas.txt" )
+
 ksemilla_azar <- tabla_semillas[ 1, semilla ]  # 1 es mi primera semilla
 
 # cargo el dataset
-dataset <- fread("./datasets/dataset_pequeno.csv")
+#dataset <- fread("./datasets/dataset_pequeno.csv")
+dataset <- fread("./Desktop/MCD/Laboratorio_de_Implementacion_I/datasets/dataset_pequeno.csv")
 
 # a partir de ahora solo trabajo con 202107, el mes que tiene clase
 dataset <- dataset[foto_mes == 202107] # defino donde voy a entrenar
@@ -108,9 +112,16 @@ gra <- ggplot(
            data = dataset[pos <= 20000],
            aes( x = pos, y = ganancia_acumulada,
                 color = ifelse(fold == 1, "train", "test") )
-             ) + geom_line()
+             ) + geom_line() 
+#ggtitle(paste("Ejecución 1 - Parámetros: minsplit <- ", PARAM$minsplit,", minbucket <- ", PARAM$minbucket,", maxdepth <- ", PARAM$maxdepth))
+               
+          
 
 print( gra )
+gra <- gra + labs(title = "Ejecución 6", 
+                  subtitle = paste("Parámetros: minsplit <- ", PARAM$minsplit,", minbucket <- ", PARAM$minbucket,", maxdepth <- ", PARAM$maxdepth, "\n Train gan max: ", dataset[fold==1, max(ganancia_acumulada)], "\n Test  gan max: ", dataset[fold==2, max(ganancia_acumulada)], "\n"))
+gra
 
 cat( "Train gan max: ", dataset[fold==1, max(ganancia_acumulada)], "\n" )
 cat( "Test  gan max: ", dataset[fold==2, max(ganancia_acumulada)], "\n" )
+
