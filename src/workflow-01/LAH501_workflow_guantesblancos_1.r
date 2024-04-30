@@ -205,7 +205,7 @@ TS_strategy_guantesblancos_202109 <- function( pmyexp, pinputexps, pserver="loca
 
   # Atencion  0.1  de  undersampling de la clase mayoritaria,  los CONTINUA
   # 1.0 significa NO undersampling ,  0.1  es quedarse con el 10% de los CONTINUA
-  param_local$train$undersampling <- 1.0 #0.1
+  param_local$train$undersampling <- 0.2 #0.1
 
   return( exp_correr_script( param_local ) ) # linea fija
 }
@@ -243,7 +243,7 @@ TS_strategy_guantesblancos_202107 <- function( pmyexp, pinputexps, pserver="loca
 
   # Atencion  0.1  de  undersampling de la clase mayoritaria,  los CONTINUA
   # 1.0 significa NO undersampling ,  0.1  es quedarse con el 10% de los CONTINUA
-  param_local$train$undersampling <- 1.0 #0.1
+  param_local$train$undersampling <- 0.2 #0.1
 
   return( exp_correr_script( param_local ) ) # linea fija
 }
@@ -295,10 +295,12 @@ HT_tuning_guantesblancos <- function( pmyexp, pinputexps, pserver="local")
 
     extra_trees = FALSE,
     # White Gloves Bayesian Optimization, with a happy narrow exploration
-    learning_rate = c( 0.02, 0.8 ),
-    feature_fraction = c( 0.5, 0.9 ),
-    num_leaves = c( 300L, 1024L,  "integer" ),
-    min_data_in_leaf = c( 100L, 2000L, "integer" )
+    learning_rate = c(0.02, 0.8),
+    feature_fraction = c(0.5, 0.9),
+    #num_leaves = c( 300L, 1024L,  "integer" ),
+    num_leaves = c(8L, 2048L,  "integer"),
+    #min_data_in_leaf = c( 100L, 2000L, "integer" )
+    min_data_in_leaf = c(10L, 10000L, "integer")
   )
 
 
