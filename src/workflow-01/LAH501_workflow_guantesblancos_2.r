@@ -107,7 +107,7 @@ DR_drifting_guantesblancos <- function( pmyexp, pinputexps, pserver="local")
   param_local$meta$script <- "/src/workflow-01/z531_DR_corregir_drifting.r"
 
   # No me engraso las manos con Feature Engineering manual
-  param_local$variables_intrames <- FALSE
+  param_local$variables_intrames <- TRUE #FALSE
   # valores posibles
   #  "ninguno", "rank_simple", "rank_cero_fijo", "deflacion", "estandarizar"
   param_local$metodo <- "rank_cero_fijo"
@@ -182,18 +182,17 @@ TS_strategy_guantesblancos_202109 <- function( pmyexp, pinputexps, pserver="loca
 
   param_local$future <- c(202109)
   #param_local$final_train <- c(202107, 202106, 202105)
-  param_local$final_train <- c(202107, 202106, 202105, 202104, 202103, 202102, 202101, 
-                              202012, 202011, 202010, 202009, 202008, 202007, 202006, 202005, 202004, 202003, 202002, 202001, 
-                              201912, 201911, 201910, 201909, 201908, 201907, 201906, 201905, 201904, 201903, 201902, 201901)
+  param_local$final_train <- c(202107, 202106, 202105, 202104, 202103, 202102, 202101, 202012, 202002, 202001, 201912, 
+                              201911, 201910, 201909, 201908, 201907, 201906, 201905, 201904, 201903, 201902, 201901)
   
   #param_local$train$training <- c(202105, 202104, 202103)
   #param_local$train$validation <- c(202106)
   #param_local$train$testing <- c(202107)
 
-  param_local$train$training <- c(202005, 202004, 202003, 202002, 202001, 
-                              201912, 201911, 201910, 201909, 201908, 201907, 201906, 201905, 201904, 201903, 201902, 201901)
-  param_local$train$validation <- c(202012, 202011, 202010, 202009, 202008, 202007, 202006)
-  param_local$train$testing <- c(202107, 202106, 202105, 202104, 202103, 202102, 202101)
+  param_local$train$training <- c(202105, 202104, 202103, 202102, 202101, 202012, 202002, 202001, 201912, 201911, 201910, 
+                                  201909, 201908, 201907, 201906, 201905, 201904, 201903, 201902, 201901)
+  param_local$train$validation <- c(202106)
+  param_local$train$testing <- c(202107)
 
   # Atencion  0.1  de  undersampling de la clase mayoritaria,  los CONTINUA
   # 1.0 significa NO undersampling ,  0.1  es quedarse con el 10% de los CONTINUA
@@ -339,18 +338,18 @@ corrida_guantesblancos_202109 <- function( pnombrewf, pvirgen=FALSE )
 {
   if( -1 == exp_wf_init( pnombrewf, pvirgen) ) return(0) # linea fija
 
-  DT_incorporar_dataset_default( "DT0001_2", "competencia_2024.csv.gz")
-  CA_catastrophe_default( "CA0001_2", "DT0001_2" )
+  DT_incorporar_dataset_default( "DT0001_3", "competencia_2024.csv.gz")
+  CA_catastrophe_default( "CA0001_3", "DT0001_3" )
 
-  DR_drifting_guantesblancos( "DR0001_2", "CA0001_2" )
-  FE_historia_guantesblancos( "FE0001_2", "DR0001_2" )
+  DR_drifting_guantesblancos( "DR0001_3", "CA0001_3" )
+  FE_historia_guantesblancos( "FE0001_3", "DR0001_3" )
 
-  TS_strategy_guantesblancos_202109( "TS0001_2", "FE0001_2" )
+  TS_strategy_guantesblancos_202109( "TS0001_3", "FE0001_3" )
 
-  HT_tuning_guantesblancos( "HT0001_2", "TS0001_2" )
+  HT_tuning_guantesblancos( "HT0001_3", "TS0001_3" )
 
   # El ZZ depente de HT y TS
-  ZZ_final_guantesblancos( "ZZ0001_2", c("HT0001_2","TS0001_2") )
+  ZZ_final_guantesblancos( "ZZ0001_3", c("HT0001_3","TS0001_3") )
 
 
   exp_wf_end( pnombrewf, pvirgen ) # linea fija
@@ -367,12 +366,12 @@ corrida_guantesblancos_202107 <- function( pnombrewf, pvirgen=FALSE )
   if( -1 == exp_wf_init( pnombrewf, pvirgen) ) return(0) # linea fija
 
   # Ya tengo corrido FE0001 y parto de alli
-  TS_strategy_guantesblancos_202107( "TS0002_2", "FE0001_2" )
+  TS_strategy_guantesblancos_202107( "TS0002_3", "FE0001_3" )
 
-  HT_tuning_guantesblancos( "HT0002_2", "TS0002_2" )
+  HT_tuning_guantesblancos( "HT0002_3", "TS0002_3" )
 
   # El ZZ depente de HT y TS
-  ZZ_final_guantesblancos( "ZZ0002_2", c("HT0002_2", "TS0002_2") )
+  ZZ_final_guantesblancos( "ZZ0002_3", c("HT0002_3", "TS0002_3") )
 
 
   exp_wf_end( pnombrewf, pvirgen ) # linea fija
@@ -384,12 +383,12 @@ corrida_guantesblancos_202107 <- function( pnombrewf, pvirgen=FALSE )
 
 # Hago primero esta corrida que me genera los experimentos
 # DT0001, CA0001, DR0001, FE0001, TS0001, HT0001 y ZZ0001
-corrida_guantesblancos_202109( "gb01_2" )
+corrida_guantesblancos_202109( "gb01_3" )
 
 
 # Luego partiendo de  FE0001
 # genero TS0002, HT0002 y ZZ0002
 
-#corrida_guantesblancos_202107( "gb02_2" )
+#corrida_guantesblancos_202107( "gb02_3" )
 
  
