@@ -389,6 +389,6 @@ corrida_guantesblancos_202109( "gb01_3" )
 # Luego partiendo de  FE0001
 # genero TS0002, HT0002 y ZZ0002
 
-#corrida_guantesblancos_202107( "gb02_3" )
+corrida_guantesblancos_202107( "gb02_3" )
 
  
