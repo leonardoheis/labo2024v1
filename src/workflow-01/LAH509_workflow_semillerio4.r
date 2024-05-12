@@ -168,7 +168,7 @@ TS_strategy_baseline_202109 <- function( pmyexp, pinputexps, pserver="local")
   param_local$train$testing <- c(202107)
 
   # undersampling  baseline
-  param_local$train$undersampling <- 0.6
+  param_local$train$undersampling <- 0.4
 
   return( exp_correr_script( param_local ) ) # linea fija
 }
@@ -191,7 +191,7 @@ TS_strategy_baseline_202107 <- function( pmyexp, pinputexps, pserver="local")
   param_local$train$testing <- c(202105)
 
   # undersampling  baseline
-  param_local$train$undersampling <- 0.6
+  param_local$train$undersampling <- 0.4
 
   return( exp_correr_script( param_local ) ) # linea fija
 }
@@ -240,15 +240,15 @@ HT_tuning_baseline <- function( pmyexp, pinputexps, pserver="local")
 
     extra_trees = TRUE,
     # Quasi  baseline, el minimo learning_rate es 0.02 !!
-    learning_rate = c( 0.01, 0.5 ),
-    feature_fraction = c( 0.4, 0.9 ),
+    learning_rate = c( 0.02, 0.5 ),
+    feature_fraction = c( 0.5, 0.9 ),
     num_leaves = c( 8L, 2048L,  "integer" ),
     min_data_in_leaf = c( 10L, 10000L, "integer" )
   )
 
 
   # una Beyesian de Guantes Blancos, solo hace 15 iteraciones
-  param_local$bo_iteraciones <- 60 # iteraciones de la Optimizacion Bayesiana
+  param_local$bo_iteraciones <- 40 # iteraciones de la Optimizacion Bayesiana
 
   return( exp_correr_script( param_local ) ) # linea fija
 }
